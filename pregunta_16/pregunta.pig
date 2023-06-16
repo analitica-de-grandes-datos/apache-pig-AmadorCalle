@@ -21,15 +21,7 @@ $ pig -x local -f pregunta.pig
         /* >>> Escriba su respuesta a partir de este punto <<< */
 */
 
-Text = LOAD 'data.csv' USING PigStorage(',')
-    AS (
-            Id:int,
-            Name:chararray,
-            last_name:chararray,
-            date:chararray,
-            colour:chararray,
-            count1:int
-    );
-specific_columns = FOREACH Text GENERATE Name,colour;
-simpleFilter = FILTER specific_columns BY (colour == 'blue' OR Name MATCHES '^[K].*');
-STORE simpleFilter INTO 'output' USING PigStorage(',');
+A = LOAD './data.csv' using PigStorage(',') AS (id:int,  name:chararray, lastname:chararray,   date:chararray,  color:chararray, other:int);
+B = FILTER A BY (name matches 'K.*') or (color matches 'blue');
+C = FOREACH B GENERATE name, color;
+STORE C INTO 'output/' using PigStorage(',');
