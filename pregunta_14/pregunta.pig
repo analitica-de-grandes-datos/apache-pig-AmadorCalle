@@ -20,3 +20,15 @@ $ pig -x local -f pregunta.pig
 
 */
 
+Text = LOAD 'data.csv' USING PigStorage(',')
+    AS (
+            Id:int,
+            Name:chararray,
+            last_name:chararray,
+            date:chararray,
+            colour:chararray,
+            count1:int
+    );
+specific_columns = FOREACH Text GENERATE colour;
+simpleFilter = FILTER specific_columns BY NOT(colour MATCHES '^[b].*');
+STORE simpleFilter INTO 'output';
